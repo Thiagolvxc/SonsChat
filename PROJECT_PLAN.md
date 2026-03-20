@@ -1,4 +1,4 @@
-# SonsChat — Plan de proyecto en 4 entregables
+# SonsChat — Plan de 4 entregables
 
 Aplicación móvil de mensajería para Android desarrollada con React Native.
 
@@ -81,13 +81,3 @@ Aplicación móvil de mensajería para Android desarrollada con React Native.
 | 2 | @react-native-firebase/app, @react-native-firebase/auth, @react-native-async-storage/async-storage |
 | 3 | @react-native-firebase/firestore, @tanstack/react-query |
 | 4 | @react-native-firebase/messaging, react-native-image-picker, expo-av |
-
----
-
-## Orden de trabajo sugerido
-
-```
-Entregable 1 → Entregable 2 → Entregable 3 → Entregable 4
-```
-
-Cada entregable define un hito funcional que se puede probar de forma independiente antes de avanzar.
