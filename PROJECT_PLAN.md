@@ -15,7 +15,7 @@ Aplicación móvil de mensajería para Android desarrollada con React Native.
 | Definir estructura de carpetas (`/screens`, `/components`, `/services`, `/stores`) | — |
 | Implementar pantallas base (Splash, Login placeholder, Home placeholder) | — |
 | Configurar Zustand para estado global | Zustand |
-| Configurar tema, estilos base y componentes UI reutilizables | React Native Paper (opcional) |
+| Configurar tema, estilos base y componentes UI reutilizables | React Native Paper |
 
 **Entregable:** App navegable con pantallas base y estructura lista para iterar.
 
@@ -49,7 +49,7 @@ Aplicación móvil de mensajería para Android desarrollada con React Native.
 | Pantalla de chat individual con mensajes en tiempo real | Firestore listeners |
 | Enviar y recibir mensajes de texto | Firestore |
 | Búsqueda/creación de conversaciones con otros usuarios | Firestore |
-| Indicadores de mensaje leído/enviado (opcional) | Firestore |
+| Indicadores de mensaje leído/enviado | Firestore |
 
 **Entregable:** Chat funcional en tiempo real entre usuarios.
 
@@ -62,10 +62,10 @@ Aplicación móvil de mensajería para Android desarrollada con React Native.
 | Tarea | Tecnologías |
 |-------|-------------|
 | Configurar Firebase Cloud Messaging (FCM) | FCM |
-| Push notifications cuando llega un mensaje nuevo | FCM, Firebase Functions (opcional) |
+| Push notifications cuando llega un mensaje nuevo | FCM, Firebase Functions |
 | Envío de imágenes en el chat | react-native-image-picker, Firestore Storage |
 | Mensajes de voz (grabar/reproducir) | expo-av |
-| Soporte offline básico (opcional) | WatermelonDB o cache con React Query |
+| Soporte offline básico | WatermelonDB o cache con React Query |
 | Refactor y optimización de estado | Zustand, React Query |
 | Pruebas en dispositivo real y ajustes finales | — |
 
@@ -77,7 +77,7 @@ Aplicación móvil de mensajería para Android desarrollada con React Native.
 
 | Entregable | Dependencias principales |
 |------------|--------------------------|
-| 1 | expo, react-navigation, zustand, react-native-paper (opcional) |
+| 1 | expo, react-navigation, zustand, react-native-paper |
 | 2 | @react-native-firebase/app, @react-native-firebase/auth, @react-native-async-storage/async-storage |
 | 3 | @react-native-firebase/firestore, @tanstack/react-query |
 | 4 | @react-native-firebase/messaging, react-native-image-picker, expo-av |
