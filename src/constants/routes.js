@@ -1,6 +1,8 @@
 export const ROUTES = {
   SPLASH: 'Splash',
   LOGIN: 'Login',
+  REGISTER: 'Register',
   HOME: 'Home',
-  TABS: 'Tabs',
+  PROFILE: 'Profile',
+  MAIN: 'Main',
 };

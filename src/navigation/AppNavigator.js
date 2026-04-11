@@ -3,7 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ROUTES } from '../constants/routes';
 import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 import HomeScreen from '../screens/HomeScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import { colors } from '../theme';
 
 const Stack = createNativeStackNavigator();
@@ -25,6 +27,11 @@ function MainTabs() {
         component={HomeScreen}
         options={{ title: 'Chats' }}
       />
+      <Tab.Screen
+        name={ROUTES.PROFILE}
+        component={ProfileScreen}
+        options={{ title: 'Perfil' }}
+      />
     </Tab.Navigator>
   );
 }
@@ -37,10 +44,20 @@ export default function AppNavigator() {
         contentStyle: { backgroundColor: colors.background },
       }}
     >
-      <Stack.Screen name="Splash" component={SplashScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name={ROUTES.SPLASH} component={SplashScreen} />
+      <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
       <Stack.Screen
-        name="Main"
+        name={ROUTES.REGISTER}
+        component={RegisterScreen}
+        options={{
+          headerShown: true,
+          headerStyle: { backgroundColor: colors.surface },
+          headerTintColor: colors.text,
+          title: 'Crear cuenta',
+        }}
+      />
+      <Stack.Screen
+        name={ROUTES.MAIN}
         component={MainTabs}
         options={{ headerShown: false }}
       />

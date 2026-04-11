@@ -1,15 +1,26 @@
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { colors } from '../theme';
 
-export default function Button({ title, onPress, variant = 'primary' }) {
+export default function Button({ title, onPress, variant = 'primary', disabled }) {
   const isSecondary = variant === 'secondary';
   return (
     <TouchableOpacity
-      style={[styles.button, isSecondary && styles.buttonSecondary]}
+      style={[
+        styles.button,
+        isSecondary && styles.buttonSecondary,
+        disabled && styles.buttonDisabled,
+      ]}
       onPress={onPress}
+      disabled={disabled}
       activeOpacity={0.8}
     >
-      <Text style={[styles.text, isSecondary && styles.textSecondary]}>
+      <Text
+        style={[
+          styles.text,
+          isSecondary && styles.textSecondary,
+          disabled && styles.textDisabled,
+        ]}
+      >
         {title}
       </Text>
     </TouchableOpacity>
@@ -36,5 +47,11 @@ const styles = StyleSheet.create({
   },
   textSecondary: {
     color: colors.textSecondary,
+  },
+  buttonDisabled: {
+    opacity: 0.45,
+  },
+  textDisabled: {
+    opacity: 0.8,
   },
 });

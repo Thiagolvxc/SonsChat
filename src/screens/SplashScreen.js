@@ -1,19 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { colors } from '../theme';
-import { useAppStore } from '../stores/useAppStore';
+import { useAuthStore } from '../stores/useAuthStore';
+import { ROUTES } from '../constants/routes';
+
+const MIN_SPLASH_MS = 1200;
 
 export default function SplashScreen({ navigation }) {
-  const setReady = useAppStore((state) => state.setReady);
+  const authReady = useAuthStore((s) => s.authReady);
+  const user = useAuthStore((s) => s.user);
+  const [minElapsed, setMinElapsed] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setReady(true);
-      navigation.replace('Login');
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, [navigation, setReady]);
+    const t = setTimeout(() => setMinElapsed(true), MIN_SPLASH_MS);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!minElapsed || !authReady) return;
+    navigation.replace(user ? ROUTES.MAIN : ROUTES.LOGIN);
+  }, [minElapsed, authReady, user, navigation]);
 
   return (
     <View style={styles.container}>
