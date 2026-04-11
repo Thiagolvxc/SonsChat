@@ -1,9 +1,11 @@
 import { initializeApp, getApps } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 import { initializeAuth, getReactNativePersistence, getAuth } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 
 let authInstance = null;
+let firestoreInstance = null;
 let devConfigLogged = false;
 
 function normalizeFirebaseConfig(raw) {
@@ -80,4 +82,14 @@ export function getFirebaseAuth() {
     }
   }
   return authInstance;
+}
+
+export function getFirestoreDb() {
+  if (!isFirebaseConfigured()) {
+    throw new Error('MISSING_FIREBASE_CONFIG');
+  }
+  if (!firestoreInstance) {
+    firestoreInstance = getFirestore(getFirebaseApp());
+  }
+  return firestoreInstance;
 }

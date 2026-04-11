@@ -5,4 +5,6 @@ export const ROUTES = {
   HOME: 'Home',
   PROFILE: 'Profile',
   MAIN: 'Main',
+  CHAT: 'Chat',
+  NEW_CHAT: 'NewChat',
 };

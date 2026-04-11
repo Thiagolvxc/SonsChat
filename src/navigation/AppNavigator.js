@@ -6,6 +6,8 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import ChatScreen from '../screens/ChatScreen';
+import NewChatScreen from '../screens/NewChatScreen';
 import { colors } from '../theme';
 
 const Stack = createNativeStackNavigator();
@@ -60,6 +62,26 @@ export default function AppNavigator() {
         name={ROUTES.MAIN}
         component={MainTabs}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ROUTES.CHAT}
+        component={ChatScreen}
+        options={{
+          headerShown: true,
+          headerStyle: { backgroundColor: colors.surface },
+          headerTintColor: colors.text,
+          title: 'Chat',
+        }}
+      />
+      <Stack.Screen
+        name={ROUTES.NEW_CHAT}
+        component={NewChatScreen}
+        options={{
+          headerShown: true,
+          headerStyle: { backgroundColor: colors.surface },
+          headerTintColor: colors.text,
+          title: 'Nuevo chat',
+        }}
       />
     </Stack.Navigator>
   );
