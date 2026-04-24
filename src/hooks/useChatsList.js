@@ -2,6 +2,10 @@ import { useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { subscribeChats } from '../services/chatService';
 
+/**
+ * Hook para suscribir la lista de chats del usuario en tiempo real.
+ * @param {string} uid
+ */
 export function useChatsList(uid) {
   const queryClient = useQueryClient();
 

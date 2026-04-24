@@ -5,73 +5,13 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { getFirebaseAuth, isFirebaseConfigured } from './firebase';
+import { formatUnknownError, mapAuthError } from '../utils/authHelpers';
 
-function mapAuthError(code) {
-  switch (code) {
-    case 'auth/invalid-email':
-      return 'El correo no es válido.';
-    case 'auth/user-disabled':
-      return 'Esta cuenta está deshabilitada.';
-    case 'auth/user-not-found':
-      return 'No existe una cuenta con ese correo.';
-    case 'auth/wrong-password':
-      return 'Contraseña incorrecta.';
-    case 'auth/invalid-credential':
-      return 'Correo o contraseña incorrectos.';
-    case 'auth/email-already-in-use':
-      return 'Ya existe una cuenta con ese correo.';
-    case 'auth/weak-password':
-      return 'La contraseña debe tener al menos 6 caracteres.';
-    case 'auth/network-request-failed':
-      return 'Sin conexión. Intenta de nuevo.';
-    case 'auth/too-many-requests':
-      return 'Demasiados intentos. Espera un momento.';
-    case 'auth/operation-not-allowed':
-      return 'Correo/contraseña no habilitado en Firebase (revisa Authentication).';
-    case 'auth/admin-restricted-operation':
-      return 'Registro deshabilitado por políticas del proyecto (Firebase Console → Authentication).';
-    case 'auth/invalid-api-key':
-    case 'auth/api-key-not-valid.-please-pass-a-valid-api-key.':
-      return 'API key de Firebase no válida. Copia de nuevo la clave web del proyecto (sin espacios), revisa el .env y en Google Cloud → Credenciales comprueba restricciones de la clave (Identity Toolkit API).';
-    case 'auth/app-not-authorized':
-      return 'Esta app no está autorizada para usar Firebase con esa clave.';
-    case 'auth/invalid-app-credential':
-      return 'Credencial de app inválida. Revisa que el appId y la API key correspondan al mismo proyecto.';
-    case 'auth/configuration-not-found':
-      return 'Configuración de Auth no encontrada. Activa Authentication en Firebase y el método correo/contraseña.';
-    case 'auth/internal-error':
-      return 'Error interno de Firebase. Suele deberse a clave API restringida: en Google Cloud → Credenciales, permite Identity Toolkit API o quita restricciones para probar.';
-    case 'auth/missing-email':
-      return 'Falta el correo electrónico.';
-    case 'auth/missing-password':
-      return 'Falta la contraseña.';
-    case 'auth/invalid-password':
-      return 'La contraseña no cumple las reglas del proyecto (longitud o complejidad).';
-    default:
-      return null;
-  }
-}
-
-function formatUnknownError(e) {
-  let code = typeof e?.code === 'string' ? e.code.trim() : null;
-  if (code?.endsWith('.')) code = code.slice(0, -1);
-  if (code?.includes('api-key-not-valid')) {
-    code = 'auth/api-key-not-valid.-please-pass-a-valid-api-key.';
-  }
-  const mapped = code ? mapAuthError(code) : null;
-  if (mapped) return mapped;
-
-  if (e?.message === 'MISSING_FIREBASE_CONFIG' || String(e?.message || '').includes('MISSING_FIREBASE_CONFIG')) {
-    return 'Configura Firebase en las variables EXPO_PUBLIC_FIREBASE_* y reinicia con npx expo start --clear.';
-  }
-
-  if (typeof __DEV__ !== 'undefined' && __DEV__ && code) {
-    return `Error de autenticación (${code}). Revisa la consola y Firebase Authentication.`;
-  }
-
-  return 'No se pudo completar la operación. Intenta de nuevo.';
-}
-
+/**
+ * Envuelve una llamada a la API de Firebase Auth para devolver un resultado estándar.
+ * @param {Function} fn
+ * @returns {Function}
+ */
 function wrap(fn) {
   return async (...args) => {
     if (!isFirebaseConfigured()) {
@@ -89,12 +29,25 @@ function wrap(fn) {
   };
 }
 
+/**
+ * Inicia sesión con correo y contraseña.
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise<object>}
+ */
 export const signInWithEmail = wrap(async (email, password) => {
   const auth = getFirebaseAuth();
   const cred = await signInWithEmailAndPassword(auth, email.trim(), password);
   return cred.user;
 });
 
+/**
+ * Registra un usuario nuevo con correo, contraseña y nombre opcional.
+ * @param {string} email
+ * @param {string} password
+ * @param {string} displayName
+ * @returns {Promise<object>}
+ */
 export const registerWithEmail = wrap(async (email, password, displayName) => {
   const auth = getFirebaseAuth();
   const cred = await createUserWithEmailAndPassword(auth, email.trim(), password);
@@ -110,6 +63,10 @@ export const registerWithEmail = wrap(async (email, password, displayName) => {
   return cred.user;
 });
 
+/**
+ * Cierra sesión del usuario actual en Firebase.
+ * @returns {Promise<{ok: boolean, error?: string}>}
+ */
 export const signOutUser = wrap(async () => {
   const auth = getFirebaseAuth();
   await signOut(auth);

@@ -1,3 +1,6 @@
+/**
+ * Constantes de rutas usadas en la navegación de la aplicación.
+ */
 export const ROUTES = {
   SPLASH: 'Splash',
   LOGIN: 'Login',

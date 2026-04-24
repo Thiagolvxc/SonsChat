@@ -15,6 +15,9 @@ import AppTextField from '../components/AppTextField';
 import { signInWithEmail } from '../services/authService';
 import { ROUTES } from '../constants/routes';
 
+/**
+ * Pantalla de inicio de sesión que permite a los usuarios entrar con correo y contraseña.
+ */
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

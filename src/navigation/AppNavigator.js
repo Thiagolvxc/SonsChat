@@ -13,6 +13,9 @@ import { colors } from '../theme';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+/**
+ * Navegación principal con pestañas para la aplicación.
+ */
 function MainTabs() {
   return (
     <Tab.Navigator
@@ -38,6 +41,9 @@ function MainTabs() {
   );
 }
 
+/**
+ * Navegador de pantallas principal que combina stack y tabs.
+ */
 export default function AppNavigator() {
   return (
     <Stack.Navigator

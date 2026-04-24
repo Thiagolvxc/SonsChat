@@ -7,6 +7,9 @@ import { ROUTES } from '../constants/routes';
 
 const MIN_SPLASH_MS = 1200;
 
+/**
+ * Pantalla de presentación que espera la inicialización de autenticación antes de navegar.
+ */
 export default function SplashScreen({ navigation }) {
   const authReady = useAuthStore((s) => s.authReady);
   const user = useAuthStore((s) => s.user);

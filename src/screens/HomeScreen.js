@@ -7,7 +7,13 @@ import { useChatsList } from '../hooks/useChatsList';
 import { ensureUserProfile } from '../services/chatService';
 import { ROUTES } from '../constants/routes';
 
-function chatTitle(chat, myUid) {
+/**
+ * Devuelve el título de chat para mostrar en la lista de conversaciones.
+ * @param {{participantIds?: string[], memberTitles?: Record<string, string>}} chat
+ * @param {string} myUid
+ * @returns {string}
+ */
+export function chatTitle(chat, myUid) {
   const other = chat.participantIds?.find((id) => id !== myUid);
   const titles = chat.memberTitles || {};
   if (other && titles[other]) return titles[other];
@@ -15,7 +21,12 @@ function chatTitle(chat, myUid) {
   return 'Chat';
 }
 
-function formatPreview(ts) {
+/**
+ * Formatea la hora del último mensaje para la lista de chats.
+ * @param {{seconds?: number}} ts
+ * @returns {string}
+ */
+export function formatPreview(ts) {
   if (!ts?.seconds) return '';
   const d = new Date(ts.seconds * 1000);
   const now = new Date();
@@ -29,6 +40,9 @@ function formatPreview(ts) {
   return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
 }
 
+/**
+ * Pantalla principal que muestra la lista de conversaciones del usuario.
+ */
 export default function HomeScreen({ navigation }) {
   const user = useAuthStore((s) => s.user);
   const uid = user?.uid;

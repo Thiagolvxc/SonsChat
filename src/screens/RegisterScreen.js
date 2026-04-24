@@ -15,6 +15,9 @@ import AppTextField from '../components/AppTextField';
 import { registerWithEmail } from '../services/authService';
 import { ROUTES } from '../constants/routes';
 
+/**
+ * Pantalla de registro de nuevo usuario para crear una cuenta de SonsChat.
+ */
 export default function RegisterScreen({ navigation }) {
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');

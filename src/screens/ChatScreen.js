@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { colors } from '../theme';
@@ -17,15 +18,26 @@ import { useMessagesList } from '../hooks/useMessagesList';
 import {
   markChatRead,
   sendTextMessage,
+  sendImageMessage,
+  sendVoiceMessage,
   subscribeChatMeta,
 } from '../services/chatService';
+import { pickImage, recordAudio, playAudio } from '../services/mediaService';
 
-function formatTime(ts) {
+/**
+ * Formatea la marca de tiempo de un mensaje para mostrarla en el chat.
+ * @param {{seconds?: number}} ts
+ * @returns {string}
+ */
+export function formatTime(ts) {
   if (!ts?.seconds) return '';
   const d = new Date(ts.seconds * 1000);
   return d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 }
 
+/**
+ * Pantalla de chat individual con mensajes, entrada de texto y estado de lectura.
+ */
 export default function ChatScreen({ route, navigation }) {
   const { chatId, title, otherUserId } = route.params || {};
   const user = useAuthStore((s) => s.user);
@@ -69,6 +81,33 @@ export default function ChatScreen({ route, navigation }) {
     }
   }, [chatId, input, sending, uid]);
 
+  const sendImage = useCallback(async () => {
+    if (!uid || !chatId || sending) return;
+    setSending(true);
+    try {
+      const uri = await pickImage();
+      if (uri) {
+        await sendImageMessage(chatId, uid, uri);
+      }
+    } finally {
+      setSending(false);
+    }
+  }, [chatId, sending, uid]);
+
+  const sendVoice = useCallback(async () => {
+    if (!uid || !chatId || sending) return;
+    setSending(true);
+    try {
+      const uri = await recordAudio();
+      if (uri) {
+        // Asumir duración de 5s para demo
+        await sendVoiceMessage(chatId, uid, uri, 5);
+      }
+    } finally {
+      setSending(false);
+    }
+  }, [chatId, sending, uid]);
+
   const renderItem = useCallback(
     ({ item }) => {
       const isMine = item.senderId === uid;
@@ -79,10 +118,25 @@ export default function ChatScreen({ route, navigation }) {
         created?.seconds != null &&
         otherLastRead.seconds >= created.seconds;
 
+      let content;
+      if (item.type === 'image') {
+        content = (
+          <Image source={{ uri: item.imageUrl }} style={styles.image} resizeMode="cover" />
+        );
+      } else if (item.type === 'voice') {
+        content = (
+          <TouchableOpacity onPress={() => playAudio(item.audioUrl)} style={styles.voiceBtn}>
+            <Text style={styles.voiceText}>🎵 Mensaje de voz ({item.duration}s)</Text>
+          </TouchableOpacity>
+        );
+      } else {
+        content = <Text style={styles.bubbleText}>{item.text}</Text>;
+      }
+
       return (
         <View style={[styles.row, isMine ? styles.rowMine : styles.rowOther]}>
           <View style={[styles.bubble, isMine ? styles.bubbleMine : styles.bubbleOther]}>
-            <Text style={styles.bubbleText}>{item.text}</Text>
+            {content}
             <View style={styles.metaRow}>
               <Text style={styles.time}>{formatTime(created)}</Text>
               {isMine ? (
@@ -120,6 +174,12 @@ export default function ChatScreen({ route, navigation }) {
         contentContainerStyle={styles.listContent}
       />
       <View style={styles.inputBar}>
+        <TouchableOpacity style={styles.mediaBtn} onPress={sendImage} disabled={sending}>
+          <Text style={styles.mediaBtnText}>📷</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.mediaBtn} onPress={sendVoice} disabled={sending}>
+          <Text style={styles.mediaBtnText}>🎤</Text>
+        </TouchableOpacity>
         <TextInput
           style={styles.input}
           placeholder="Mensaje"
@@ -238,5 +298,27 @@ const styles = StyleSheet.create({
   sendBtnText: {
     color: colors.text,
     fontWeight: '600',
+  },
+  image: {
+    width: 200,
+    height: 200,
+    borderRadius: 8,
+  },
+  voiceBtn: {
+    padding: 8,
+  },
+  voiceText: {
+    color: colors.text,
+    fontSize: 14,
+  },
+  mediaBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    marginRight: 4,
+    backgroundColor: colors.primary,
+    borderRadius: 10,
+  },
+  mediaBtnText: {
+    fontSize: 18,
   },
 });

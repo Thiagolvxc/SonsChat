@@ -3,34 +3,24 @@ import { getFirestore } from 'firebase/firestore';
 import { initializeAuth, getReactNativePersistence, getAuth } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
+import { normalizeFirebaseConfig } from '../utils/firebaseHelpers';
 
 let authInstance = null;
 let firestoreInstance = null;
 let devConfigLogged = false;
 
-function normalizeFirebaseConfig(raw) {
-  if (!raw || typeof raw !== 'object') return {};
-  const out = {};
-  for (const [k, v] of Object.entries(raw)) {
-    if (v == null) continue;
-    let s = String(v).replace(/^\uFEFF/, '').trim();
-    for (let i = 0; i < 4; i += 1) {
-      if (
-        (s.startsWith('"') && s.endsWith('"')) ||
-        (s.startsWith("'") && s.endsWith("'"))
-      ) {
-        s = s.slice(1, -1).trim();
-      } else break;
-    }
-    out[k] = s;
-  }
-  return out;
-}
-
+/**
+ * Devuelve la configuración de Firebase lista para inicializar la app.
+ * @returns {Record<string, string>}
+ */
 export function getFirebaseConfig() {
   return normalizeFirebaseConfig(Constants.expoConfig?.extra?.firebase ?? {});
 }
 
+/**
+ * Comprueba si hay suficiente configuración de Firebase para inicializar los servicios.
+ * @returns {boolean}
+ */
 export function isFirebaseConfigured() {
   const c = getFirebaseConfig();
   return Boolean(
@@ -63,6 +53,10 @@ export function getFirebaseApp() {
   return getApps()[0];
 }
 
+/**
+ * Inicializa o devuelve la instancia de autenticación de Firebase.
+ * @returns {object}
+ */
 export function getFirebaseAuth() {
   if (!isFirebaseConfigured()) {
     throw new Error('MISSING_FIREBASE_CONFIG');
@@ -84,6 +78,10 @@ export function getFirebaseAuth() {
   return authInstance;
 }
 
+/**
+ * Inicializa o devuelve la instancia de Firestore.
+ * @returns {object}
+ */
 export function getFirestoreDb() {
   if (!isFirebaseConfigured()) {
     throw new Error('MISSING_FIREBASE_CONFIG');

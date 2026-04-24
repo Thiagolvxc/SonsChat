@@ -16,6 +16,9 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { getOrCreateDirectChat, searchUsersByEmailPrefix } from '../services/chatService';
 import { ROUTES } from '../constants/routes';
 
+/**
+ * Pantalla para buscar usuarios por correo y comenzar un chat directo.
+ */
 export default function NewChatScreen({ navigation }) {
   const user = useAuthStore((s) => s.user);
   const [query, setQuery] = useState('');

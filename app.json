@@ -12,8 +12,17 @@
       "backgroundColor": "#1a1a2e"
     },
     "assetBundlePatterns": ["**/*"],
+    "permissions": [
+      "CAMERA",
+      "MEDIA_LIBRARY",
+      "AUDIO_RECORDING"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "notification": {
+        "icon": "./assets/notification-icon.png",
+        "color": "#1a1a2e"
+      }
     },
     "android": {
       "package": "com.sonschat.app",
@@ -22,6 +31,10 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png",
         "backgroundColor": "#1a1a2e"
+      },
+      "notification": {
+        "icon": "./assets/notification-icon.png",
+        "color": "#1a1a2e"
       }
     },
     "web": {

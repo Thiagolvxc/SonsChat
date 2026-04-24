@@ -7,6 +7,9 @@ import { signOutUser } from '../services/authService';
 import { resetToLogin } from '../navigation/navigationRef';
 import { useAuthStore } from '../stores/useAuthStore';
 
+/**
+ * Pantalla de perfil donde el usuario puede ver su correo y cerrar sesión.
+ */
 export default function ProfileScreen() {
   const user = useAuthStore((s) => s.user);
   const [loading, setLoading] = useState(false);
