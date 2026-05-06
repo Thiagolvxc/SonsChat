@@ -13,8 +13,29 @@ let devConfigLogged = false;
  * Devuelve la configuración de Firebase lista para inicializar la app.
  * @returns {Record<string, string>}
  */
+function getExpoExtra() {
+  return Constants.expoConfig?.extra ?? Constants.manifest?.extra ?? {};
+}
+
+function getEnvFirebaseConfig() {
+  return {
+    apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
+    measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  };
+}
+
 export function getFirebaseConfig() {
-  return normalizeFirebaseConfig(Constants.expoConfig?.extra?.firebase ?? {});
+  const extra = getExpoExtra();
+  const firebase = extra.firebase ?? {};
+  return normalizeFirebaseConfig({
+    ...getEnvFirebaseConfig(),
+    ...firebase,
+  });
 }
 
 /**

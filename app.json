@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#1a1a2e"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "permissions": [
       "CAMERA",
       "MEDIA_LIBRARY",
@@ -39,6 +41,13 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "firebase": {},
+      "cloudinary": {},
+      "eas": {
+        "projectId": "c6771708-3dc9-4067-b6cb-22d620760b33"
+      }
     }
   }
 }

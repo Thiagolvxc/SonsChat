@@ -1,13 +1,60 @@
-import { Audio } from "expo-av";
-import * as ImagePicker from "expo-image-picker";
-import { v2 as cloudinary } from "cloudinary";
+import Constants from 'expo-constants';
+import { Audio } from 'expo-av';
+import * as ImagePicker from 'expo-image-picker';
 
-// Configurar Cloudinary (reemplaza con tus credenciales)
-cloudinary.config({
-    cloud_name: envStr('EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME'),
-    api_key: envStr('EXPO_PUBLIC_CLOUDINARY_API_KEY'),
-    api_secret: envStr('EXPO_PUBLIC_CLOUDINARY_API_SECRET'),
-});
+const getCloudinaryConfig = () => {
+    const extra = Constants.expoConfig?.extra ?? {};
+    const cloudinary = extra.cloudinary ?? {};
+    return {
+        cloudName:
+        cloudinary.cloudName || process.env.EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME,
+        uploadPreset:
+        cloudinary.uploadPreset || process.env.EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
+    };
+};
+
+const getFileType = (uri, defaultType) => {
+    const extension = uri.split('.').pop()?.toLowerCase();
+    if (!extension) return defaultType;
+    if (['jpg', 'jpeg'].includes(extension)) return 'image/jpeg';
+    if (extension === 'png') return 'image/png';
+    if (extension === 'gif') return 'image/gif';
+    if (extension === 'm4a') return 'audio/m4a';
+    if (extension === 'mp3') return 'audio/mpeg';
+    if (extension === 'wav') return 'audio/wav';
+    return defaultType;
+};
+
+const uploadToCloudinary = async ({ uri, folder, publicId, resourceType, defaultType }) => {
+    const { cloudName, uploadPreset } = getCloudinaryConfig();
+    if (!cloudName || !uploadPreset) {
+        throw new Error('Missing Cloudinary configuration');
+    }
+
+    const fileType = getFileType(uri, defaultType);
+    const fileName = publicId || `${resourceType || 'file'}_${Date.now()}`;
+    const formData = new FormData();
+    formData.append('file', {
+        uri,
+        name: `${fileName}.${uri.split('.').pop() ?? 'dat'}`,
+        type: fileType,
+    });
+    formData.append('upload_preset', uploadPreset);
+    if (folder) formData.append('folder', folder);
+
+    const endpoint = `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType ?? 'image'}/upload`;
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.error?.message || 'Cloudinary upload failed');
+    }
+
+    return data.secure_url;
+};
 
 /**
  * Servicio para manejar multimedia: imágenes y audio.
@@ -20,24 +67,15 @@ cloudinary.config({
  */
 export const uploadImage = async (uri) => {
     try {
-        // Convertir la imagen a base64
-        const response = await fetch(uri);
-        const blob = await response.blob();
-        const base64 = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.readAsDataURL(blob);
+        return await uploadToCloudinary({
+        uri,
+        folder: 'sonschat/images',
+        publicId: `image_${Date.now()}`,
+        resourceType: 'image',
+        defaultType: 'image/jpeg',
         });
-
-        // Subir a Cloudinary
-        const result = await cloudinary.uploader.upload(base64, {
-        folder: "sonschat/images",
-        public_id: `image_${Date.now()}`,
-        });
-
-        return result.secure_url;
     } catch (error) {
-        console.error("Error uploading image to Cloudinary:", error);
+        console.error('Error uploading image to Cloudinary:', error);
         throw error;
     }
 };
@@ -111,25 +149,15 @@ export const recordAudio = async () => {
  */
 export const uploadAudio = async (uri) => {
     try {
-        // Convertir el audio a base64
-        const response = await fetch(uri);
-        const blob = await response.blob();
-        const base64 = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.readAsDataURL(blob);
+        return await uploadToCloudinary({
+        uri,
+        folder: 'sonschat/audio',
+        publicId: `audio_${Date.now()}`,
+        resourceType: 'video',
+        defaultType: 'audio/m4a',
         });
-
-        // Subir a Cloudinary
-        const result = await cloudinary.uploader.upload(base64, {
-        folder: "sonschat/audio",
-        public_id: `audio_${Date.now()}`,
-        resource_type: "video", // Cloudinary trata audio como video
-        });
-
-        return result.secure_url;
     } catch (error) {
-        console.error("Error uploading audio to Cloudinary:", error);
+        console.error('Error uploading audio to Cloudinary:', error);
         throw error;
     }
 };

@@ -27,5 +27,9 @@ module.exports = ({ config }) => ({
       appId: envStr('EXPO_PUBLIC_FIREBASE_APP_ID'),
       measurementId: envStr('EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID'),
     },
+    cloudinary: {
+      cloudName: envStr('EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME'),
+      uploadPreset: envStr('EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET'),
+    },
   },
 });

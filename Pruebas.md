@@ -48,7 +48,12 @@ Se han agregado funcionalidades para enviar imágenes y mensajes de voz:
 
 #### Configuración:
 - `app.json` — Permisos para cámara, galería y micrófono.
-- `package.json` — Dependencias `expo-image-picker`, `expo-av`, `cloudinary`.
+- `package.json` — Dependencias `expo-image-picker` y `expo-av`.
+- `app.config.js` — Variables Cloudinary públicas inyectadas en la app.
+
+> **Nota**: Usa un `upload preset` no firmado en Cloudinary y configura estas variables en tu entorno:
+> - `EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME`
+> - `EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET`
 
 ## Comandos de prueba
 
