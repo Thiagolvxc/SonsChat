@@ -1,3 +1,39 @@
+const fs = require('fs');
+const path = require('path');
+
+/** Carga variables desde el archivo .env en el directorio raíz si no están en process.env. */
+function loadDotEnv() {
+  const envPath = path.resolve(__dirname, '.env');
+  if (!fs.existsSync(envPath)) return;
+
+  const content = fs.readFileSync(envPath, 'utf8');
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith('#')) continue;
+    const index = line.indexOf('=');
+    if (index === -1) continue;
+
+    const key = line.slice(0, index).trim();
+    let value = line.slice(index + 1).trim();
+    if (!value) continue;
+
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1).trim();
+    }
+
+    if (process.env[key] == null) {
+      process.env[key] = value;
+    }
+  }
+}
+
+// loadDotEnv();
+
+loadDotEnv();
+
 /** Quita BOM, espacios y comillas envolventes del .env (p. ej. KEY="valor" → valor). */
 function envStr(name) {
   let v = process.env[name];

@@ -219,49 +219,49 @@
  * @returns {string|null}
  */
 export function mapAuthError(code) {
-  switch (code) {
-    case 'auth/invalid-email':
-      return 'El correo no es válido.';
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/user-disabled':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Esta cuenta está deshabilitada.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/user-not-found':</span>
-<span class="cstat-no" title="statement not covered" >      return 'No existe una cuenta con ese correo.';</span>
-    case 'auth/wrong-password':
-      return 'Contraseña incorrecta.';
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/invalid-credential':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Correo o contraseña incorrectos.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/email-already-in-use':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Ya existe una cuenta con ese correo.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/weak-password':</span>
-<span class="cstat-no" title="statement not covered" >      return 'La contraseña debe tener al menos 6 caracteres.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/network-request-failed':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Sin conexión. Intenta de nuevo.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/too-many-requests':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Demasiados intentos. Espera un momento.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/operation-not-allowed':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Correo/contraseña no habilitado en Firebase (revisa Authentication).';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/admin-restricted-operation':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Registro deshabilitado por políticas del proyecto (Firebase Console → Authentication).';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/invalid-api-key':</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/api-key-not-valid.-please-pass-a-valid-api-key.':</span>
-<span class="cstat-no" title="statement not covered" >      return 'API key de Firebase no válida. Copia de nuevo la clave web del proyecto (sin espacios), revisa el .env y en Google Cloud → Credenciales comprueba restricciones de la clave (Identity Toolkit API).';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/app-not-authorized':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Esta app no está autorizada para usar Firebase con esa clave.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/invalid-app-credential':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Credencial de app inválida. Revisa que el appId y la API key correspondan al mismo proyecto.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/configuration-not-found':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Configuración de Auth no encontrada. Activa Authentication en Firebase y el método correo/contraseña.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/internal-error':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Error interno de Firebase. Suele deberse a clave API restringida: en Google Cloud → Credenciales, permite Identity Toolkit API o quita restricciones para probar.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/missing-email':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Falta el correo electrónico.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/missing-password':</span>
-<span class="cstat-no" title="statement not covered" >      return 'Falta la contraseña.';</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >    case 'auth/invalid-password':</span>
-<span class="cstat-no" title="statement not covered" >      return 'La contraseña no cumple las reglas del proyecto (longitud o complejidad).';</span>
-    default:
-      return null;
-  }
+    switch (code) {
+        case 'auth/invalid-email':
+        return 'El correo no es válido.';
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/user-disabled':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Esta cuenta está deshabilitada.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/user-not-found':</span>
+<span class="cstat-no" title="statement not covered" >        return 'No existe una cuenta con ese correo.';</span>
+        case 'auth/wrong-password':
+        return 'Contraseña incorrecta.';
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/invalid-credential':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Correo o contraseña incorrectos.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/email-already-in-use':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Ya existe una cuenta con ese correo.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/weak-password':</span>
+<span class="cstat-no" title="statement not covered" >        return 'La contraseña debe tener al menos 6 caracteres.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/network-request-failed':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Sin conexión. Intenta de nuevo.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/too-many-requests':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Demasiados intentos. Espera un momento.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/operation-not-allowed':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Correo/contraseña no habilitado en Firebase (revisa Authentication).';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/admin-restricted-operation':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Registro deshabilitado por políticas del proyecto (Firebase Console → Authentication).';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/invalid-api-key':</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/api-key-not-valid.-please-pass-a-valid-api-key.':</span>
+<span class="cstat-no" title="statement not covered" >        return 'API key de Firebase no válida. Copia de nuevo la clave web del proyecto (sin espacios), revisa el .env y en Google Cloud → Credenciales comprueba restricciones de la clave (Identity Toolkit API).';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/app-not-authorized':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Esta app no está autorizada para usar Firebase con esa clave.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/invalid-app-credential':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Credencial de app inválida. Revisa que el appId y la API key correspondan al mismo proyecto.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/configuration-not-found':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Configuración de Auth no encontrada. Activa Authentication en Firebase y el método correo/contraseña.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/internal-error':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Error interno de Firebase. Suele deberse a clave API restringida: en Google Cloud → Credenciales, permite Identity Toolkit API o quita restricciones para probar.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/missing-email':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Falta el correo electrónico.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/missing-password':</span>
+<span class="cstat-no" title="statement not covered" >        return 'Falta la contraseña.';</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'auth/invalid-password':</span>
+<span class="cstat-no" title="statement not covered" >        return 'La contraseña no cumple las reglas del proyecto (longitud o complejidad).';</span>
+        default:
+        return null;
+    }
 }
 &nbsp;
 /**
@@ -270,23 +270,23 @@ export function mapAuthError(code) {
  * @returns {string}
  */
 export function formatUnknownError(e) {
-  let code = typeof e?.code === 'string' <span class="branch-0 cbranch-no" title="branch not covered" >? e.code.trim() </span>: null;
-  if (code<span class="branch-0 cbranch-no" title="branch not covered" >?.endsWith(</span>'.')) <span class="branch-0 cbranch-no" title="branch not covered" >code = code.slice(0, -1);</span>
-  if (code<span class="branch-0 cbranch-no" title="branch not covered" >?.includes(</span>'api-key-not-valid')) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >    code = 'auth/api-key-not-valid.-please-pass-a-valid-api-key.';</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-  const mapped = code <span class="branch-0 cbranch-no" title="branch not covered" >? mapAuthError(code) </span>: null;
-  if (mapped) <span class="branch-0 cbranch-no" title="branch not covered" >return mapped;</span>
+    let code = typeof e?.code === 'string' <span class="branch-0 cbranch-no" title="branch not covered" >? e.code.trim() </span>: null;
+    if (code<span class="branch-0 cbranch-no" title="branch not covered" >?.endsWith(</span>'.')) <span class="branch-0 cbranch-no" title="branch not covered" >code = code.slice(0, -1);</span>
+    if (code<span class="branch-0 cbranch-no" title="branch not covered" >?.includes(</span>'api-key-not-valid')) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >        code = 'auth/api-key-not-valid.-please-pass-a-valid-api-key.';</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+    const mapped = code <span class="branch-0 cbranch-no" title="branch not covered" >? mapAuthError(code) </span>: null;
+    if (mapped) <span class="branch-0 cbranch-no" title="branch not covered" >return mapped;</span>
 &nbsp;
-  if (e?.message === 'MISSING_FIREBASE_CONFIG' <span class="branch-0 cbranch-no" title="branch not covered" >|| String(e?.message || '').includes('MISSING_FIREBASE_CONFIG'))</span> {
-    return 'Configura Firebase en las variables EXPO_PUBLIC_FIREBASE_* y reinicia con npx expo start --clear.';
-  }
+    if (e?.message === 'MISSING_FIREBASE_CONFIG' <span class="branch-0 cbranch-no" title="branch not covered" >|| String(e?.message || '').includes('MISSING_FIREBASE_CONFIG'))</span> {
+        return 'Configura Firebase en las variables EXPO_PUBLIC_FIREBASE_* y reinicia con npx expo start --clear.';
+    }
 <span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
-  if (typeof __DEV__ !== 'undefined' &amp;&amp; __DEV__ <span class="branch-0 cbranch-no" title="branch not covered" >&amp;&amp; code)</span> <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >    return `Error de autenticación (${code}). Revisa la consola y Firebase Authentication.`;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+    if (typeof __DEV__ !== 'undefined' &amp;&amp; __DEV__ <span class="branch-0 cbranch-no" title="branch not covered" >&amp;&amp; code)</span> <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >        return `Error de autenticación (${code}). Revisa la consola y Firebase Authentication.`;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  return 'No se pudo completar la operación. Intenta de nuevo.';</span>
+<span class="cstat-no" title="statement not covered" >    return 'No se pudo completar la operación. Intenta de nuevo.';</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;</pre></td></tr></table></pre>
 
@@ -295,7 +295,7 @@ export function formatUnknownError(e) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-04-24T23:27:22.392Z
+                at 2026-05-08T21:16:07.718Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

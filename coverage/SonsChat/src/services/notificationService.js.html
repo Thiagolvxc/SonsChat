@@ -331,38 +331,38 @@
 <span class="cstat-no" title="statement not covered" > * Solicita permisos y configura los listeners para mensajes.</span>
 <span class="cstat-no" title="statement not covered" > */</span>
 <span class="cstat-no" title="statement not covered" >export const initializeNotifications = async () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    // Solicitar permisos</span>
-<span class="cstat-no" title="statement not covered" >    const authStatus = await messaging().requestPermission();</span>
-<span class="cstat-no" title="statement not covered" >    const enabled =</span>
-<span class="cstat-no" title="statement not covered" >      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||</span>
-<span class="cstat-no" title="statement not covered" >      authStatus === messaging.AuthorizationStatus.PROVISIONAL;</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >        // Solicitar permisos</span>
+<span class="cstat-no" title="statement not covered" >        const authStatus = await messaging().requestPermission();</span>
+<span class="cstat-no" title="statement not covered" >        const enabled =</span>
+<span class="cstat-no" title="statement not covered" >        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||</span>
+<span class="cstat-no" title="statement not covered" >        authStatus === messaging.AuthorizationStatus.PROVISIONAL;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    if (enabled) {</span>
-<span class="cstat-no" title="statement not covered" >      console.log('Authorization status:', authStatus);</span>
+<span class="cstat-no" title="statement not covered" >        if (enabled) {</span>
+<span class="cstat-no" title="statement not covered" >        console.log('Authorization status:', authStatus);</span>
+<span class="cstat-no" title="statement not covered" >        }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >        // Configurar listeners</span>
+<span class="cstat-no" title="statement not covered" >        setupMessageListeners();</span>
+<span class="cstat-no" title="statement not covered" >    } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >        console.error('Error initializing notifications:', error);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    // Configurar listeners</span>
-<span class="cstat-no" title="statement not covered" >    setupMessageListeners();</span>
-<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    console.error('Error initializing notifications:', error);</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >/**</span>
 <span class="cstat-no" title="statement not covered" > * Configura los listeners para mensajes entrantes.</span>
 <span class="cstat-no" title="statement not covered" > */</span>
 <span class="cstat-no" title="statement not covered" >const setupMessageListeners = () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  // Listener para mensajes cuando la app está en foreground</span>
-<span class="cstat-no" title="statement not covered" >  messaging().onMessage(async remoteMessage =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));</span>
-<span class="cstat-no" title="statement not covered" >    showNotificationAlert(remoteMessage);</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
+<span class="cstat-no" title="statement not covered" >    // Listener para mensajes cuando la app está en foreground</span>
+<span class="cstat-no" title="statement not covered" >    messaging().onMessage(async remoteMessage =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));</span>
+<span class="cstat-no" title="statement not covered" >        showNotificationAlert(remoteMessage);</span>
+<span class="cstat-no" title="statement not covered" >    });</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  // Listener para mensajes cuando la app está en background</span>
-<span class="cstat-no" title="statement not covered" >  messaging().setBackgroundMessageHandler(async remoteMessage =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.log('Message handled in the background!', JSON.stringify(remoteMessage));</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
+<span class="cstat-no" title="statement not covered" >    // Listener para mensajes cuando la app está en background</span>
+<span class="cstat-no" title="statement not covered" >    messaging().setBackgroundMessageHandler(async remoteMessage =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        console.log('Message handled in the background!', JSON.stringify(remoteMessage));</span>
+<span class="cstat-no" title="statement not covered" >    });</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >/**</span>
@@ -370,14 +370,14 @@
 <span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;string|null&gt;} El token FCM o null si hay error.</span>
 <span class="cstat-no" title="statement not covered" > */</span>
 <span class="cstat-no" title="statement not covered" >export const getFCMToken = async () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const token = await messaging().getToken();</span>
-<span class="cstat-no" title="statement not covered" >    console.log('FCM Token:', token);</span>
-<span class="cstat-no" title="statement not covered" >    return token;</span>
-<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    console.error('Error getting FCM token:', error);</span>
-<span class="cstat-no" title="statement not covered" >    return null;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >        const token = await messaging().getToken();</span>
+<span class="cstat-no" title="statement not covered" >        console.log('FCM Token:', token);</span>
+<span class="cstat-no" title="statement not covered" >        return token;</span>
+<span class="cstat-no" title="statement not covered" >    } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >        console.error('Error getting FCM token:', error);</span>
+<span class="cstat-no" title="statement not covered" >        return null;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >/**</span>
@@ -387,16 +387,16 @@
 <span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;void&gt;}</span>
 <span class="cstat-no" title="statement not covered" > */</span>
 <span class="cstat-no" title="statement not covered" >export const saveFCMToken = async (uid, token) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const db = getFirestoreDb();</span>
-<span class="cstat-no" title="statement not covered" >    const userRef = doc(db, 'users', uid);</span>
-<span class="cstat-no" title="statement not covered" >    await updateDoc(userRef, {</span>
-<span class="cstat-no" title="statement not covered" >      fcmToken: token,</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >    console.log('FCM Token saved for user:', uid);</span>
-<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    console.error('Error saving FCM token:', error);</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >        const db = getFirestoreDb();</span>
+<span class="cstat-no" title="statement not covered" >        const userRef = doc(db, 'users', uid);</span>
+<span class="cstat-no" title="statement not covered" >        await updateDoc(userRef, {</span>
+<span class="cstat-no" title="statement not covered" >        fcmToken: token,</span>
+<span class="cstat-no" title="statement not covered" >        });</span>
+<span class="cstat-no" title="statement not covered" >        console.log('FCM Token saved for user:', uid);</span>
+<span class="cstat-no" title="statement not covered" >    } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >        console.error('Error saving FCM token:', error);</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >/**</span>
@@ -405,18 +405,18 @@
 <span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;string|null&gt;} El token FCM o null si no existe.</span>
 <span class="cstat-no" title="statement not covered" > */</span>
 <span class="cstat-no" title="statement not covered" >export const getUserFCMToken = async (uid) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const db = getFirestoreDb();</span>
-<span class="cstat-no" title="statement not covered" >    const userRef = doc(db, 'users', uid);</span>
-<span class="cstat-no" title="statement not covered" >    const userSnap = await getDoc(userRef);</span>
-<span class="cstat-no" title="statement not covered" >    if (userSnap.exists()) {</span>
-<span class="cstat-no" title="statement not covered" >      return userSnap.data().fcmToken || null;</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >        const db = getFirestoreDb();</span>
+<span class="cstat-no" title="statement not covered" >        const userRef = doc(db, 'users', uid);</span>
+<span class="cstat-no" title="statement not covered" >        const userSnap = await getDoc(userRef);</span>
+<span class="cstat-no" title="statement not covered" >        if (userSnap.exists()) {</span>
+<span class="cstat-no" title="statement not covered" >        return userSnap.data().fcmToken || null;</span>
+<span class="cstat-no" title="statement not covered" >        }</span>
+<span class="cstat-no" title="statement not covered" >        return null;</span>
+<span class="cstat-no" title="statement not covered" >    } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >        console.error('Error getting FCM token:', error);</span>
+<span class="cstat-no" title="statement not covered" >        return null;</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >    return null;</span>
-<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    console.error('Error getting FCM token:', error);</span>
-<span class="cstat-no" title="statement not covered" >    return null;</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >/**</span>
@@ -424,10 +424,10 @@
 <span class="cstat-no" title="statement not covered" > * @param {Object} remoteMessage - El mensaje remoto recibido.</span>
 <span class="cstat-no" title="statement not covered" > */</span>
 <span class="cstat-no" title="statement not covered" >const showNotificationAlert = (remoteMessage) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const { title, body } = remoteMessage.notification || {};</span>
-<span class="cstat-no" title="statement not covered" >  if (title &amp;&amp; body) {</span>
-<span class="cstat-no" title="statement not covered" >    Alert.alert(title, body);</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >    const { title, body } = remoteMessage.notification || {};</span>
+<span class="cstat-no" title="statement not covered" >    if (title &amp;&amp; body) {</span>
+<span class="cstat-no" title="statement not covered" >        Alert.alert(title, body);</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >/**</span>
@@ -438,9 +438,9 @@
 <span class="cstat-no" title="statement not covered" > * @param {string} body - El cuerpo de la notificación.</span>
 <span class="cstat-no" title="statement not covered" > */</span>
 <span class="cstat-no" title="statement not covered" >export const sendNotification = async (token, title, body) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  // Esta función es solo para demostración. En producción, usar Firebase Functions o servidor.</span>
-<span class="cstat-no" title="statement not covered" >  console.log('Sending notification to:', token, 'Title:', title, 'Body:', body);</span>
-<span class="cstat-no" title="statement not covered" >  // Aquí iría la lógica para enviar la notificación usando Firebase Admin SDK</span>
+<span class="cstat-no" title="statement not covered" >    // Esta función es solo para demostración. En producción, usar Firebase Functions o servidor.</span>
+<span class="cstat-no" title="statement not covered" >    console.log('Sending notification to:', token, 'Title:', title, 'Body:', body);</span>
+<span class="cstat-no" title="statement not covered" >    // Aquí iría la lógica para enviar la notificación usando Firebase Admin SDK</span>
 <span class="cstat-no" title="statement not covered" >};</span></pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -448,7 +448,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-04-24T23:27:22.392Z
+                at 2026-05-08T21:16:07.718Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

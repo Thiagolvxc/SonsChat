@@ -14,17 +14,8 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "permissions": [
-      "CAMERA",
-      "MEDIA_LIBRARY",
-      "AUDIO_RECORDING"
-    ],
     "ios": {
-      "supportsTablet": true,
-      "notification": {
-        "icon": "./assets/notification-icon.png",
-        "color": "#1a1a2e"
-      }
+      "supportsTablet": true
     },
     "android": {
       "package": "com.sonschat.app",
@@ -33,10 +24,6 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png",
         "backgroundColor": "#1a1a2e"
-      },
-      "notification": {
-        "icon": "./assets/notification-icon.png",
-        "color": "#1a1a2e"
       }
     },
     "web": {
@@ -48,6 +35,12 @@
       "eas": {
         "projectId": "c6771708-3dc9-4067-b6cb-22d620760b33"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/c6771708-3dc9-4067-b6cb-22d620760b33"
     }
   }
 }

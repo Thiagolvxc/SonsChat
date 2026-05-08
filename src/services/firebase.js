@@ -14,7 +14,12 @@ let devConfigLogged = false;
  * @returns {Record<string, string>}
  */
 function getExpoExtra() {
-  return Constants.expoConfig?.extra ?? Constants.manifest?.extra ?? {};
+  return (
+    Constants.expoConfig?.extra ??
+    Constants.manifest2?.extra ??
+    Constants.manifest?.extra ??
+    {}
+  );
 }
 
 function getEnvFirebaseConfig() {
