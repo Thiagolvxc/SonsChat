@@ -81,7 +81,7 @@ export const uploadImage = async (uri) => {
 };
 
 /**
- * Selecciona una imagen desde la galería o cámara.
+ * Selecciona una imagen desde la galería.
  * @returns {Promise<string|null>} URI de la imagen seleccionada o null si cancelado.
  */
 export const pickImage = async () => {
@@ -97,6 +97,54 @@ export const pickImage = async () => {
         allowsEditing: true,
         aspect: [4, 3],
         quality: 0.8,
+    });
+
+    if (!result.canceled) {
+        return result.assets[0].uri;
+    }
+    return null;
+};
+
+/**
+ * Toma una foto usando la cámara del dispositivo.
+ * @returns {Promise<string|null>} URI de la foto o null si cancelado.
+ */
+export const takePhoto = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+        alert('Se necesita permiso para usar la cámara.');
+        return null;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+    });
+
+    if (!result.canceled) {
+        return result.assets[0].uri;
+    }
+    return null;
+};
+
+/**
+ * Graba un video con la cámara del dispositivo.
+ * @returns {Promise<string|null>} URI del video o null si cancelado.
+ */
+export const recordVideo = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+        alert('Se necesita permiso para grabar video.');
+        return null;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        allowsEditing: false,
+        videoMaxDuration: 15,
+        quality: ImagePicker.VideoQualityType.High,
     });
 
     if (!result.canceled) {
@@ -158,6 +206,21 @@ export const uploadAudio = async (uri) => {
         });
     } catch (error) {
         console.error('Error uploading audio to Cloudinary:', error);
+        throw error;
+    }
+};
+
+export const uploadVideo = async (uri) => {
+    try {
+        return await uploadToCloudinary({
+        uri,
+        folder: 'sonschat/videos',
+        publicId: `video_${Date.now()}`,
+        resourceType: 'video',
+        defaultType: 'video/mp4',
+        });
+    } catch (error) {
+        console.error('Error uploading video to Cloudinary:', error);
         throw error;
     }
 };

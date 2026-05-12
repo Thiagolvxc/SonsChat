@@ -10,6 +10,7 @@ import {
   Platform,
   TouchableOpacity,
   Image,
+  Linking,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { colors } from '../theme';
@@ -20,9 +21,10 @@ import {
   sendTextMessage,
   sendImageMessage,
   sendVoiceMessage,
+  sendVideoMessage,
   subscribeChatMeta,
 } from '../services/chatService';
-import { pickImage, recordAudio, playAudio } from '../services/mediaService';
+import { pickImage, takePhoto, recordVideo, recordAudio, playAudio } from '../services/mediaService';
 
 /**
  * Formatea la marca de tiempo de un mensaje para mostrarla en el chat.
@@ -94,6 +96,32 @@ export default function ChatScreen({ route, navigation }) {
     }
   }, [chatId, sending, uid]);
 
+  const sendPhoto = useCallback(async () => {
+    if (!uid || !chatId || sending) return;
+    setSending(true);
+    try {
+      const uri = await takePhoto();
+      if (uri) {
+        await sendImageMessage(chatId, uid, uri);
+      }
+    } finally {
+      setSending(false);
+    }
+  }, [chatId, sending, uid]);
+
+  const sendVideo = useCallback(async () => {
+    if (!uid || !chatId || sending) return;
+    setSending(true);
+    try {
+      const uri = await recordVideo();
+      if (uri) {
+        await sendVideoMessage(chatId, uid, uri, 0);
+      }
+    } finally {
+      setSending(false);
+    }
+  }, [chatId, sending, uid]);
+
   const sendVoice = useCallback(async () => {
     if (!uid || !chatId || sending) return;
     setSending(true);
@@ -122,6 +150,15 @@ export default function ChatScreen({ route, navigation }) {
       if (item.type === 'image') {
         content = (
           <Image source={{ uri: item.imageUrl }} style={styles.image} resizeMode="cover" />
+        );
+      } else if (item.type === 'video') {
+        content = (
+          <TouchableOpacity
+            onPress={() => item.videoUrl && Linking.openURL(item.videoUrl)}
+            style={styles.videoBtn}
+          >
+            <Text style={styles.videoText}>🎬 Reproducir video</Text>
+          </TouchableOpacity>
         );
       } else if (item.type === 'voice') {
         content = (
@@ -175,7 +212,13 @@ export default function ChatScreen({ route, navigation }) {
       />
       <View style={styles.inputBar}>
         <TouchableOpacity style={styles.mediaBtn} onPress={sendImage} disabled={sending}>
-          <Text style={styles.mediaBtnText}>📷</Text>
+          <Text style={styles.mediaBtnText}>�️</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.mediaBtn} onPress={sendPhoto} disabled={sending}>
+          <Text style={styles.mediaBtnText}>📸</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.mediaBtn} onPress={sendVideo} disabled={sending}>
+          <Text style={styles.mediaBtnText}>🎥</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.mediaBtn} onPress={sendVoice} disabled={sending}>
           <Text style={styles.mediaBtnText}>🎤</Text>
@@ -267,6 +310,7 @@ const styles = StyleSheet.create({
   },
   inputBar: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'flex-end',
     paddingHorizontal: 10,
     paddingVertical: 10,
@@ -303,6 +347,17 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 8,
+  },
+  videoBtn: {
+    padding: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+  },
+  videoText: {
+    color: colors.text,
+    fontSize: 14,
   },
   voiceBtn: {
     padding: 8,

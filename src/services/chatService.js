@@ -17,7 +17,7 @@ import {
 import { getFirestoreDb } from './firebase';
 import { getDirectChatId } from '../utils/chatHelpers';
 import { getUserFCMToken, sendNotification } from './notificationService';
-import { uploadImage, uploadAudio } from './mediaService';
+import { uploadImage, uploadAudio, uploadVideo } from './mediaService';
 
 /**
  * Garantiza que el perfil del usuario exista en Firestore.
@@ -228,6 +228,75 @@ export async function markChatRead(chatId, readerUid) {
   await updateDoc(chatRef, {
     [`lastReadAt.${readerUid}`]: serverTimestamp(),
   });
+}
+
+/**
+ * Envía un mensaje de video en un chat.
+ * @param {string} chatId
+ * @param {string} senderId
+ * @param {string} videoUri
+ * @param {number} duration
+ * @returns {Promise<void>}
+ */
+export async function sendVideoMessage(chatId, senderId, videoUri, duration = 0) {
+  const db = getFirestoreDb();
+  const batch = writeBatch(db);
+  const msgRef = doc(collection(db, 'chats', chatId, 'messages'));
+
+  const videoUrl = await uploadVideo(videoUri);
+
+  batch.set(msgRef, {
+    type: 'video',
+    videoUrl,
+    duration,
+    senderId,
+    createdAt: serverTimestamp(),
+  });
+  const chatRef = doc(db, 'chats', chatId);
+  batch.update(chatRef, {
+    lastMessageText: 'Video',
+    lastMessageAt: serverTimestamp(),
+  });
+  await batch.commit();
+
+  try {
+    const chatSnap = await getDoc(chatRef);
+    if (chatSnap.exists()) {
+      const chatData = chatSnap.data();
+      const participants = chatData.participantIds || [];
+      const otherParticipants = participants.filter((id) => id !== senderId);
+
+      const senderSnap = await getDoc(doc(db, 'users', senderId));
+      const senderName = senderSnap.exists() ? senderSnap.data().displayName || 'Usuario' : 'Usuario';
+
+      for (const participantId of otherParticipants) {
+        const token = await getUserFCMToken(participantId);
+        if (token) {
+          await sendNotification(token, `Nuevo mensaje de ${senderName}`, 'Video');
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error sending notifications:', error);
+  }
+}
+
+/**
+ * Elimina un chat y sus mensajes asociados.
+ * @param {string} chatId
+ * @returns {Promise<void>}
+ */
+export async function deleteChat(chatId) {
+  const db = getFirestoreDb();
+  const chatRef = doc(db, 'chats', chatId);
+  const messagesSnap = await getDocs(collection(db, 'chats', chatId, 'messages'));
+  const batch = writeBatch(db);
+
+  messagesSnap.docs.forEach((messageDoc) => {
+    batch.delete(messageDoc.ref);
+  });
+  batch.delete(chatRef);
+  await batch.commit();
 }
 
 /**

@@ -1,94 +1,43 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ROUTES } from '../constants/routes';
-import SplashScreen from '../screens/SplashScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import ChatScreen from '../screens/ChatScreen';
 import NewChatScreen from '../screens/NewChatScreen';
-import { colors } from '../theme';
+import ChatScreen from '../screens/ChatScreen';
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
 
 /**
- * Navegación principal con pestañas para la aplicación.
+ * Navegación mínima para la aplicación simplificada.
  */
-function MainTabs() {
+export default function AppNavigator({ user }) {
   return (
-    <Tab.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: colors.surface },
-        headerTintColor: colors.text,
-        tabBarStyle: { backgroundColor: colors.surface },
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textSecondary,
-      }}
-    >
-      <Tab.Screen
-        name={ROUTES.HOME}
-        component={HomeScreen}
-        options={{ title: 'Chats' }}
-      />
-      <Tab.Screen
-        name={ROUTES.PROFILE}
-        component={ProfileScreen}
-        options={{ title: 'Perfil' }}
-      />
-    </Tab.Navigator>
-  );
-}
-
-/**
- * Navegador de pantallas principal que combina stack y tabs.
- */
-export default function AppNavigator() {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        contentStyle: { backgroundColor: colors.background },
-      }}
-    >
-      <Stack.Screen name={ROUTES.SPLASH} component={SplashScreen} />
-      <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
-      <Stack.Screen
-        name={ROUTES.REGISTER}
-        component={RegisterScreen}
-        options={{
-          headerShown: true,
-          headerStyle: { backgroundColor: colors.surface },
-          headerTintColor: colors.text,
-          title: 'Crear cuenta',
-        }}
-      />
-      <Stack.Screen
-        name={ROUTES.MAIN}
-        component={MainTabs}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name={ROUTES.CHAT}
-        component={ChatScreen}
-        options={{
-          headerShown: true,
-          headerStyle: { backgroundColor: colors.surface },
-          headerTintColor: colors.text,
-          title: 'Chat',
-        }}
-      />
-      <Stack.Screen
-        name={ROUTES.NEW_CHAT}
-        component={NewChatScreen}
-        options={{
-          headerShown: true,
-          headerStyle: { backgroundColor: colors.surface },
-          headerTintColor: colors.text,
-          title: 'Nuevo chat',
-        }}
-      />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {user ? (
+        <>
+          <Stack.Screen name={ROUTES.HOME} component={HomeScreen} />
+          <Stack.Screen
+            name={ROUTES.NEW_CHAT}
+            component={NewChatScreen}
+            options={{ headerShown: true, title: 'Nuevo chat' }}
+          />
+          <Stack.Screen
+            name={ROUTES.CHAT}
+            component={ChatScreen}
+            options={{ headerShown: true, title: 'Chat' }}
+          />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
+          <Stack.Screen
+            name={ROUTES.REGISTER}
+            component={RegisterScreen}
+            options={{ headerShown: true, title: 'Crear cuenta' }}
+          />
+        </>
+      )}
     </Stack.Navigator>
   );
 }

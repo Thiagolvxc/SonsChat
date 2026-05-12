@@ -4,7 +4,7 @@ Aplicación móvil de mensajería para Android desarrollada con React Native.
 
 ## Plan del proyecto
 
-El desarrollo está dividido en **4 entregables**. Ver [PROJECT_PLAN.md](./PROJECT_PLAN.md) para el detalle completo.
+El desarrollo está dividido en **4 entregables**.
 
 | # | Entregable | Descripción |
 |---|------------|-------------|

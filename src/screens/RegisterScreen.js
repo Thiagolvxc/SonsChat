@@ -43,7 +43,6 @@ export default function RegisterScreen({ navigation }) {
       setFormError(result.error);
       return;
     }
-    navigation.replace(ROUTES.MAIN);
   }
 
   return (

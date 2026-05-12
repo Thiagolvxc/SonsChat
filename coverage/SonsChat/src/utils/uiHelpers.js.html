@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.34% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>41/43</span>
+                <span class='fraction'>0/43</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.92% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/13</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.34% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>41/43</span>
+                <span class='fraction'>0/43</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -106,92 +106,92 @@
 <a name='L41'></a><a href='#L41'>41</a>
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
-<a name='L44'></a><a href='#L44'>44</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L44'></a><a href='#L44'>44</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
- * Devuelve el título de chat para mostrar en la lista de conversaciones.
- * @param {{participantIds?: Array&lt;string&gt;, memberTitles?: Record&lt;string, string&gt;}} chat
- * @param {string} myUid
- * @returns {string}
- */
-export function chatTitle(chat, myUid) {
-    const other = chat.participantIds?.find((id) =&gt; id !== myUid);
-    const titles = chat.memberTitles <span class="branch-0 cbranch-no" title="branch not covered" >|| {};</span>
-    if (other &amp;&amp; titles[other]) return titles[other];
-    if (other) return `Usuario ${other.slice(-4)}`;
-<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >    return 'Chat';</span></span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >/**</span></span></span>
+<span class="cstat-no" title="statement not covered" > * Devuelve el título de chat para mostrar en la lista de conversaciones.</span>
+<span class="cstat-no" title="statement not covered" > * @param {{participantIds?: Array&lt;string&gt;, memberTitles?: Record&lt;string, string&gt;}} chat</span>
+<span class="cstat-no" title="statement not covered" > * @param {string} myUid</span>
+<span class="cstat-no" title="statement not covered" > * @returns {string}</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export function chatTitle(chat, myUid) {</span>
+<span class="cstat-no" title="statement not covered" >    const other = chat.participantIds?.find((id) =&gt; id !== myUid);</span>
+<span class="cstat-no" title="statement not covered" >    const titles = chat.memberTitles || {};</span>
+<span class="cstat-no" title="statement not covered" >    if (other &amp;&amp; titles[other]) return titles[other];</span>
+<span class="cstat-no" title="statement not covered" >    if (other) return `Usuario ${other.slice(-4)}`;</span>
+<span class="cstat-no" title="statement not covered" >    return 'Chat';</span>
 <span class="cstat-no" title="statement not covered" >}</span>
-&nbsp;
-/**
- * Formatea la hora del último mensaje para la lista de chats.
- * @param {{seconds?: number}} ts
- * @returns {string}
- */
-export function formatPreview(ts) {
-    if (!ts?.seconds) <span class="branch-0 cbranch-no" title="branch not covered" >return '';</span>
-    const d = new Date(ts.seconds * 1000);
-    const now = new Date();
-    const sameDay =
-        d.getDate() === now.getDate() &amp;&amp;
-        d.getMonth() === now.getMonth() &amp;&amp;
-        d.getFullYear() === now.getFullYear();
-    if (sameDay) {
-        return d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-    }
-    return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
-}
-&nbsp;
-/**
- * Formatea la marca de tiempo de un mensaje para mostrarla en el chat.
- * @param {{seconds?: number}} ts
- * @returns {string}
- */
-export function formatTime(ts) {
-    if (!ts?.seconds) return '';
-    const d = new Date(ts.seconds * 1000);
-    return d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-}
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >/**</span>
+<span class="cstat-no" title="statement not covered" > * Formatea la hora del último mensaje para la lista de chats.</span>
+<span class="cstat-no" title="statement not covered" > * @param {{seconds?: number}} ts</span>
+<span class="cstat-no" title="statement not covered" > * @returns {string}</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export function formatPreview(ts) {</span>
+<span class="cstat-no" title="statement not covered" >    if (!ts?.seconds) return '';</span>
+<span class="cstat-no" title="statement not covered" >    const d = new Date(ts.seconds * 1000);</span>
+<span class="cstat-no" title="statement not covered" >    const now = new Date();</span>
+<span class="cstat-no" title="statement not covered" >    const sameDay =</span>
+<span class="cstat-no" title="statement not covered" >        d.getDate() === now.getDate() &amp;&amp;</span>
+<span class="cstat-no" title="statement not covered" >        d.getMonth() === now.getMonth() &amp;&amp;</span>
+<span class="cstat-no" title="statement not covered" >        d.getFullYear() === now.getFullYear();</span>
+<span class="cstat-no" title="statement not covered" >    if (sameDay) {</span>
+<span class="cstat-no" title="statement not covered" >        return d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >    return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >/**</span>
+<span class="cstat-no" title="statement not covered" > * Formatea la marca de tiempo de un mensaje para mostrarla en el chat.</span>
+<span class="cstat-no" title="statement not covered" > * @param {{seconds?: number}} ts</span>
+<span class="cstat-no" title="statement not covered" > * @returns {string}</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export function formatTime(ts) {</span>
+<span class="cstat-no" title="statement not covered" >    if (!ts?.seconds) return '';</span>
+<span class="cstat-no" title="statement not covered" >    const d = new Date(ts.seconds * 1000);</span>
+<span class="cstat-no" title="statement not covered" >    return d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -199,7 +199,7 @@ export function formatTime(ts) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-05-08T21:16:07.718Z
+                at 2026-05-11T23:36:59.573Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

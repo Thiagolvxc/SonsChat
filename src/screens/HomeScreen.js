@@ -1,113 +1,123 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { colors } from '../theme';
+import { signOutUser } from '../services/authService';
+import { subscribeChats, deleteChat } from '../services/chatService';
 import { useAuthStore } from '../stores/useAuthStore';
-import { useChatsList } from '../hooks/useChatsList';
-import { ensureUserProfile } from '../services/chatService';
 import { ROUTES } from '../constants/routes';
 
-/**
- * Devuelve el título de chat para mostrar en la lista de conversaciones.
- * @param {{participantIds?: string[], memberTitles?: Record<string, string>}} chat
- * @param {string} myUid
- * @returns {string}
- */
-export function chatTitle(chat, myUid) {
-  const other = chat.participantIds?.find((id) => id !== myUid);
-  const titles = chat.memberTitles || {};
-  if (other && titles[other]) return titles[other];
-  if (other) return `Usuario ${other.slice(-4)}`;
-  return 'Chat';
-}
-
-/**
- * Formatea la hora del último mensaje para la lista de chats.
- * @param {{seconds?: number}} ts
- * @returns {string}
- */
-export function formatPreview(ts) {
-  if (!ts?.seconds) return '';
-  const d = new Date(ts.seconds * 1000);
-  const now = new Date();
-  const sameDay =
-    d.getDate() === now.getDate() &&
-    d.getMonth() === now.getMonth() &&
-    d.getFullYear() === now.getFullYear();
-  if (sameDay) {
-    return d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-  }
-  return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
-}
-
-/**
- * Pantalla principal que muestra la lista de conversaciones del usuario.
- */
 export default function HomeScreen({ navigation }) {
   const user = useAuthStore((s) => s.user);
-  const uid = user?.uid;
-  const { data: chats = [] } = useChatsList(uid);
+  const [chats, setChats] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      ensureUserProfile(user).catch(() => {});
+    if (!user?.uid) {
+      setChats([]);
+      setLoading(false);
+      return undefined;
     }
+
+    setLoading(true);
+    const unsubscribe = subscribeChats(
+      user.uid,
+      (rows) => {
+        setChats(rows);
+        setLoading(false);
+      },
+      () => {
+        setChats([]);
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
   }, [user]);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => navigation.getParent()?.navigate(ROUTES.NEW_CHAT)}
-          style={styles.headerBtn}
-        >
-          <Text style={styles.headerBtnText}>Nuevo</Text>
-        </TouchableOpacity>
-      ),
+  async function handleLogout() {
+    const result = await signOutUser();
+    if (!result.ok) {
+      Alert.alert('Error', 'No se pudo cerrar sesión. Intenta de nuevo.');
+    }
+  }
+
+  async function handleDeleteChat(chatId) {
+    try {
+      await deleteChat(chatId);
+    } catch (error) {
+      console.warn('Error al eliminar chat:', error);
+      Alert.alert('Error', 'No se pudo eliminar el chat. Intenta de nuevo.');
+    }
+  }
+
+  function openChat(chat) {
+    const title = chat.memberTitles?.[user.uid]
+      ? Object.values(chat.memberTitles).find((name) => name !== chat.memberTitles[user.uid]) || 'Chat'
+      : 'Chat';
+
+    navigation.navigate(ROUTES.CHAT, {
+      chatId: chat.id,
+      title,
+      otherUserId: chat.participantIds?.find((id) => id !== user.uid) || null,
     });
-  }, [navigation]);
-
-  const openChat = useCallback(
-    (chat) => {
-      const other = chat.participantIds?.find((id) => id !== uid);
-      navigation.getParent()?.navigate(ROUTES.CHAT, {
-        chatId: chat.id,
-        title: chatTitle(chat, uid),
-        otherUserId: other,
-      });
-    },
-    [navigation, uid]
-  );
-
-  const sorted = useMemo(() => chats, [chats]);
+  }
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Chats</Text>
+      <Text style={styles.subtitle}>Bienvenido, {user?.displayName || user?.email || 'Usuario'}</Text>
+
+      <TouchableOpacity
+        style={styles.newChatButton}
+        onPress={() => navigation.navigate(ROUTES.NEW_CHAT)}
+      >
+        <Text style={styles.newChatText}>+ Nuevo chat</Text>
+      </TouchableOpacity>
+
       <FlatList
-        data={sorted}
+        data={chats}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.row} onPress={() => openChat(item)}>
-            <View style={styles.rowTop}>
-              <Text style={styles.title}>{chatTitle(item, uid)}</Text>
-              <Text style={styles.time}>{formatPreview(item.lastMessageAt)}</Text>
-            </View>
-            <Text style={styles.preview} numberOfLines={1}>
-              {item.lastMessageText || 'Sin mensajes aún'}
-            </Text>
-          </TouchableOpacity>
-        )}
+        showsVerticalScrollIndicator={false}
+        style={styles.chatList}
         ListEmptyComponent={
-          <View style={styles.emptyWrap}>
-            <Text style={styles.emptyTitle}>No hay conversaciones</Text>
-            <Text style={styles.emptySub}>
-              Pulsa <Text style={styles.bold}>Nuevo</Text> y busca el correo de otra persona registrada
-              para chatear.
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>
+              {loading ? 'Cargando chats...' : 'Aún no tienes chats. Crea uno nuevo.'}
             </Text>
           </View>
         }
+        renderItem={({ item }) => {
+          const otherName = item.memberTitles?.[user.uid]
+            ? Object.values(item.memberTitles).find((name) => name !== item.memberTitles[user.uid]) || 'Contacto'
+            : 'Contacto';
+
+          return (
+            <View style={styles.chatRow}>
+              <TouchableOpacity style={styles.chatInfo} onPress={() => openChat(item)}>
+                <Text style={styles.chatTitle}>{otherName}</Text>
+                <Text style={styles.chatSubtitle}>{item.lastMessageText || 'Empieza la conversación'}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteChat(item.id)}>
+                <Text style={styles.deleteText}>Eliminar</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }}
       />
-      <StatusBar style="light" />
+
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutText}>Cerrar sesión</Text>
+      </TouchableOpacity>
+
+      <StatusBar style="dark" />
     </View>
   );
 }
@@ -115,63 +125,90 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
     backgroundColor: colors.background,
   },
-  row: {
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  rowTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   title: {
-    fontSize: 17,
-    fontWeight: '600',
-    color: colors.text,
-    flex: 1,
-    marginRight: 8,
-  },
-  time: {
-    fontSize: 12,
-    color: colors.textSecondary,
-  },
-  preview: {
-    marginTop: 6,
-    fontSize: 14,
-    color: colors.textSecondary,
-  },
-  emptyWrap: {
-    padding: 32,
-    alignItems: 'center',
-  },
-  emptyTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: colors.text,
-    marginBottom: 8,
-  },
-  emptySub: {
-    fontSize: 14,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-  bold: {
+    fontSize: 28,
     fontWeight: '700',
     color: colors.text,
+    marginBottom: 4,
   },
-  headerBtn: {
-    marginRight: 8,
+  subtitle: {
+    fontSize: 16,
+    color: colors.textSecondary,
+    marginBottom: 20,
+  },
+  newChatButton: {
+    backgroundColor: colors.primary,
+    paddingVertical: 14,
+    borderRadius: 14,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  newChatText: {
+    color: colors.surface,
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  chatList: {
+    flex: 1,
+  },
+  chatRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 14,
+    marginBottom: 12,
+    backgroundColor: colors.surface,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  chatInfo: {
+    flex: 1,
+    marginRight: 12,
+  },
+  chatTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.text,
+    marginBottom: 4,
+  },
+  chatSubtitle: {
+    color: colors.textSecondary,
+    fontSize: 14,
+  },
+  deleteButton: {
     paddingVertical: 6,
     paddingHorizontal: 10,
+    borderRadius: 10,
+    backgroundColor: colors.error,
   },
-  headerBtnText: {
-    color: colors.primary,
+  deleteText: {
+    color: colors.surface,
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  logoutButton: {
+    backgroundColor: colors.secondary,
+    paddingVertical: 14,
+    borderRadius: 14,
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  logoutText: {
+    color: colors.text,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    marginTop: 32,
+  },
+  emptyText: {
+    color: colors.textSecondary,
+    fontSize: 16,
+    textAlign: 'center',
   },
 });

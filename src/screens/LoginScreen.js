@@ -37,7 +37,6 @@ export default function LoginScreen({ navigation }) {
       setFormError(result.error);
       return;
     }
-    navigation.replace(ROUTES.MAIN);
   }
 
   return (
